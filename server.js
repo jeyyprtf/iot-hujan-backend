@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require("express");
 const http = require("http");
 const WebSocket = require("ws");
@@ -9,7 +8,6 @@ const { createClient } = require("@supabase/supabase-js");
 const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
 const timezone = require("dayjs/plugin/timezone");
-const { configDotenv } = require("dotenv");
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -230,7 +228,11 @@ async function validateSupabaseSetup() {
   }
 }
 
-server.listen(3001, "192.168.1.201", async () => {
-  console.log("Server running on http://192.168.1.201:3001");
+// Menentukan port dan host dari environment variable atau default
+const PORT = process.env.PORT || 3001;
+const HOST = process.env.HOST || '0.0.0.0'; // Gunakan 0.0.0.0 untuk binding ke semua IP
+
+server.listen(PORT, HOST, async () => {
+  console.log(`Server running on http://${HOST}:${PORT}`);
   await validateSupabaseSetup();
 });
